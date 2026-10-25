@@ -5,6 +5,7 @@ def new_state(requirement):
         "ambiguities": [],
         "assumptions": [],
         "tasks": [],
+        "waves": [],
         "design": {},
         "code_files": {},
         "test_results": {},
