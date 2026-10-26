@@ -9,7 +9,7 @@
   into waves.
 - **Shared state** (`src/orchestrator/state.py`): one dictionary holding the
   requirement, assumptions, tasks, design and results.
-- **Agents** (`src/agents/`): Analyst, Planner, Architect [and Coder].
+- **Agents** (`src/agents/`): Analyst, Planner and Architect.
 - **Model gateway** (`src/agents/llm.py`): the single place agents ask a model.
   Currently returns prepared answers.
 
@@ -22,7 +22,7 @@
                                                                         |
                                                         (human approves)|
                                                                         v
-                                                                  [Coder]
+                                                              design saved in state
 
 Each step reads from the shared state, adds its result, and the orchestrator
 moves on only when every dependency has finished.
@@ -36,8 +36,8 @@ moves on only when every dependency has finished.
 
 ## Controlled autonomy
 
-Agents run their steps without prompting. A human must approve the plan and the
-design before the workflow continues.
+Agents run their steps without prompting. A human must approve the analysis,
+the plan and the design before the workflow continues.
 
 ## URL shortener design (produced by the Architect agent)
 
@@ -59,3 +59,4 @@ design before the workflow continues.
   variability.
 - Sequential execution is slower than parallel waves.
 - No authentication or rate limiting in version one.
+- Code generation, test generation and the final summary are not built yet.

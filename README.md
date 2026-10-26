@@ -17,11 +17,9 @@ Working:
 - Architect agent: produces components, API contract, database schema, and
   design decisions with trade-offs
 - Guardrails: task graph validation, design completeness check
-- [OPTIONAL, only if your Coder works] Coder agent: writes a URL shortener
-  service into `output/url_shortener/` after safety checks
 - Unit tests for the orchestrator and the task graph
 
-Not built (see Limitations): Tester, Risk Reviewer and Summarizer agents,
+Not built (see Limitations): Coder, Tester, Risk Reviewer and Summarizer agents,
 real brownfield and ambiguous-requirement examples, and a live model connection.
 
 ## How it works
@@ -36,7 +34,7 @@ Think of it like a CI/CD pipeline for writing software:
 | Retry on failure | `max_retries` in the runner |
 | Manual approval gate | `needs_approval=True`, asks y/n in the terminal |
 
-Flow: Analyze -> Plan -> Design [-> Code]. Plan and Design wait for human approval.
+Flow: Analyze -> Plan -> Design. Each step waits for human approval.
 
 ## Setup
 
@@ -87,8 +85,9 @@ without changing the agents.
 ## Limitations
 
 - No live model connection; agents return prepared answers.
-- Tester, Risk Reviewer and Summarizer agents are not implemented, so there is
-  no automated generated-test run and no final engineering summary yet.
+- Coder, Tester, Risk Reviewer and Summarizer agents are not implemented, so
+  no service code or generated tests are produced yet, and there is no final
+  engineering summary.
 - Only the greenfield URL shortener scenario is demonstrated. Brownfield
   (impact analysis on an existing codebase) and ambiguous-requirement examples
   are not implemented.
@@ -98,7 +97,8 @@ without changing the agents.
 
 ## Next steps
 
-1. Add the Tester agent: write tests, run them, retry on failure.
+1. Add the Coder agent with file safety checks, then the Tester agent that
+   writes tests, runs them and retries on failure.
 2. Add the Risk Reviewer and Summarizer to produce the final summary.
 3. Add a brownfield example with impact analysis and an ambiguous example.
 4. Connect a real model and run tasks in a wave in parallel.
