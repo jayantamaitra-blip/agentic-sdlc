@@ -5,6 +5,7 @@ OUTPUT_DIR = Path("output/generated_url_shortener")
 
 SHORTENER_SOURCE = r'''import json
 import sqlite3
+from contextlib import closing
 from datetime import datetime, timedelta, timezone
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse
@@ -25,7 +26,7 @@ def encode_base62(number):
 class URLShortener:
     def __init__(self, db_path="shortener.db"):
         self.db_path = db_path
-        with self._connect() as conn:
+        with closing(self._connect()) as conn, conn:
             conn.execute("""CREATE TABLE IF NOT EXISTS links (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 code TEXT UNIQUE,
@@ -55,7 +56,7 @@ class URLShortener:
             if not isinstance(expires_in_days, int) or isinstance(expires_in_days, bool) or expires_in_days < 1:
                 raise ValueError("expires_in_days must be a positive integer")
             expires_at = (now + timedelta(days=expires_in_days)).isoformat()
-        with self._connect() as conn:
+        with closing(self._connect()) as conn, conn:
             cursor = conn.execute(
                 "INSERT INTO links(code, original_url, created_at, expires_at) VALUES('', ?, ?, ?)",
                 (url, now.isoformat(), expires_at),
@@ -66,7 +67,7 @@ class URLShortener:
 
     def resolve(self, code):
         now = datetime.now(timezone.utc)
-        with self._connect() as conn:
+        with closing(self._connect()) as conn, conn:
             link = conn.execute("SELECT * FROM links WHERE code = ?", (code,)).fetchone()
             if link is None:
                 return None
@@ -76,7 +77,7 @@ class URLShortener:
             return link["original_url"]
 
     def stats(self, code):
-        with self._connect() as conn:
+        with closing(self._connect()) as conn, conn:
             link = conn.execute("SELECT id FROM links WHERE code = ?", (code,)).fetchone()
             if link is None:
                 return None
