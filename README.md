@@ -43,7 +43,7 @@ Flow: Analyze -> Plan -> Design [-> Code]. Plan and Design wait for human approv
 Requires Python 3.10 or newer. The core system uses only the standard library.
 
 ```
-git clone <your-repo-url>
+git clone https://github.com/jayantamaitra-blip/agentic-sdlc.git
 cd agentic-sdlc
 python -m venv venv
 venv\Scripts\activate        # Mac/Linux: source venv/bin/activate
