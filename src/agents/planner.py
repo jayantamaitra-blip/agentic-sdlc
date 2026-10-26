@@ -10,7 +10,8 @@ def plan_tasks(state):
         "with a 'tasks' list. Each task needs an 'id', a 'title' and a "
         "'depends_on' list of task ids.\n\n"
         f"Requirement: {state['requirement']}\n"
-        f"Assumptions: {state['assumptions']}"
+        f"Assumptions: {state['assumptions']}\n"
+        f"Approved design: {state['design']}"
     )
     reply = ask_model("planner", prompt)
     tasks = json.loads(reply)["tasks"]
